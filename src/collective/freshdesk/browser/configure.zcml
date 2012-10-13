@@ -1,0 +1,14 @@
+<configure 
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="collective.freshdesk">
+    <!-- -*- extra stuff goes here -*- -->
+
+  <browser:view
+      for="*"
+      name="freshdeskauth_view"
+      class=".freshdeskauthview.FreshDeskAuthView"
+      permission="zope.Public"
+      />
+
+</configure>

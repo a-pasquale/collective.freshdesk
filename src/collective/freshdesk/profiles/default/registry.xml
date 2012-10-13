@@ -1,0 +1,15 @@
+<registry>
+
+    <record name="collective.freshdesk.domain_name">
+        <field type="plone.registry.field.TextLine">
+            <title>FreshDesk Domain Name</title>
+        </field>
+        <value></value>
+    </record>
+    <record name="collective.freshdesk.sso_secret">
+        <field type="plone.registry.field.TextLine">
+            <title>FreshDesk SSO Secret</title>
+        </field>
+        <value></value>
+    </record>
+</registry>
