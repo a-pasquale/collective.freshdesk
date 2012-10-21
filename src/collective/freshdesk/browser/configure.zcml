@@ -4,6 +4,16 @@
     i18n_domain="collective.freshdesk">
     <!-- -*- extra stuff goes here -*- -->
 
+  <browser:page
+      for="*"
+      name="freshdesk_view"
+      class=".freshdeskview.FreshdeskView"
+      template="freshdeskview.pt"
+      allowed_interface=".freshdeskview.IFreshdeskView"
+      permission="zope.Public"
+      />
+
+
   <browser:view
       for="*"
       name="freshdeskauth_view"

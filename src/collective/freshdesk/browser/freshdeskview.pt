@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="collective.freshdesk">
+<body>
+<metal:block fill-slot="javascript_head_slot">
+<script type="text/javascript" charset="utf-8">
+    jQuery(function($) {
+        $().ready(function () {
+            <!--$('#freshdesk').load('/freshdesk/support/tickets #Pagearea', function(){-->
+                $('iframe').contents().find('.header').hide();
+            <!--});-->
+        });
+    });
+</script>
+
+</metal:block>
+    <div metal:fill-slot="main">
+        <tal:main-macro metal:define-macro="main"
+                        tal:define="testview view/test">
+
+     <iframe src="/freshdesk/support/tickets" width="100%" height="600"/>
+
+            <span tal:content="testview/dummy">test</span>
+
+        </tal:main-macro>
+    </div>
+</body>
+</html>
