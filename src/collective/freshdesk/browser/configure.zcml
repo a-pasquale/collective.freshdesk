@@ -13,7 +13,6 @@
       permission="zope.Public"
       />
 
-
   <browser:view
       for="*"
       name="freshdeskauth_view"

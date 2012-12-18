@@ -1,29 +1,252 @@
+<tal:block tal:define="tickets view/getTickets">
+<tal:block tal:condition="not: tickets/partial">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="collective.freshdesk">
 <body>
-<metal:block fill-slot="javascript_head_slot">
-<script type="text/javascript" charset="utf-8">
-    jQuery(function($) {
-        $().ready(function () {
-            <!--$('#freshdesk').load('/freshdesk/support/tickets #Pagearea', function(){-->
-                $('iframe').contents().find('.header').hide();
-            <!--});-->
-        });
-    });
-</script>
-
-</metal:block>
     <div metal:fill-slot="main">
-        <tal:main-macro metal:define-macro="main"
-                        tal:define="testview view/test">
+        <tal:main-macro metal:define-macro="main">
 
-     <iframe src="/freshdesk/support/tickets" width="100%" height="600"/>
+            <link href="/packages/app.css?1354099876" media="screen" rel="stylesheet" type="text/css">
+            <style>
+                .search_results_bar { top: 40px; right:0px; width: 325px;} 
+                .nav_search { float: right }
+                #new_ticket_modal { float: left; }
+                #new_ticket_modal form { margin: 0; }
+                .ui-form .required.html_paragraph { height: 12em; }
+                .ssportal_filters { float: left; margin: 0; margin-right: 20px; }
+                .view_filters { margin: 0; }
+                .view_filters .link-item { padding: 0; }
+                #content .fd-menu ul, #content .ui-form { list-style-type: none; margin-left: 0; }
+                table#tickets-expanded { margin-bottom: 0; }
+                .ticket-list-group { margin: 0; }
+                #content #attachment-options { display: none } 
+            </style>
+            <h1 class="documentFirstHeading"><span></span>Helpdesk Tickets</h1>
+            <div class="leftcontent">
+                <span tal:replace="structure tickets/all_views"/>
+            </div>
+            <a href="#new_ticket_modal" role="button" class="btn" data-toggle="modal" data-backdrop="true">Submit a ticket</a>
+            <div id="new_ticket_modal" class="modal fade hide" role="dialog">
+                <link href="/packages/redactor.css?1353741612" media="screen" rel="stylesheet" type="text/css" />
+                <script src="/packages/redactor.js?1353134572" type="text/javascript"></script>
+                <form action="/helpdesk/tickets" class="new_helpdesk_ticket" enctype="multipart/form-data" id="new_helpdesk_ticket" method="post">
+                    <div class="modal-header">
+                        <h3 class="title">Submit a ticket</h3>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="ui-form">    
+                            <li class="email"><label for="helpdesk_ticket_email">Requester <span class="required_star">*</span></label><input class=" required email" id="helpdesk_ticket_email" name="helpdesk_ticket[email]" size="30" type="text" tal:attributes="value python: context.portal_membership.getAuthenticatedMember().getProperty('email')" /></li>
+                            <li class="text"><label for="helpdesk_ticket_subject">Subject <span class="required_star">*</span></label><input class=" required text" id="helpdesk_ticket_subject" name="helpdesk_ticket[subject]" size="30" type="text" /></li>
+                            <li class="html_paragraph"><label for="helpdesk_ticket_description_html">Description <span class="required_star">*</span></label><textarea class=" required html_paragraph mceEditor" cols="40" id="helpdesk_ticket_description_html" name="helpdesk_ticket[description_html]" rows="20"></textarea></li>
+                            <!--
+                            <li>
+                                <label>Attach a file</label>
+                                <input type="file" id="ticket_file" name="emptyfile" nameWhenFilled="helpdesk_ticket[attachments][][resource]" fileContainer="ticket-container" fileList="ticket-attachments" sendFocusTo="ticket-body" />
+                                <div class="info-data">
+                                    Attachment(s) size can be up to 15 MB
+                                </div>
+                                <div class="attachments" id="ticket-container" style="display:none">
+                                    <div id="ticket-attachments"></div>
+                                </div>
+                                <script id="file-list-template" type="text/x-jquery-tmpl">          
+                                    <div class="item">
+                                        <span>
+                                            ${name} - <a href="javascript:void(0)" onclick="Helpdesk.Multifile.remove(this); return false;" inputId="${inputId}">remove</a>
+                                        </span>
+                                    </div>
+                                </script>
+                            </li>
+                            -->
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="button-container">
+                            <input class="btn btn-primary" id="helpdesk_ticket_submit" name="commit" type="submit" value="Submit" />
+                            <input id="meta_user_agent" name="meta[user_agent]" type="hidden" value="" />
+                            <button data-dismiss="modal" class="btn">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <form action="/search" class="nav_search" method="get">
+                <div class="search_bar" id="SearchBar">
+                    <span class="searchIcon"></span>
+                    <label class="overlabel" for="header_search">Search</label>
+                    <input value="" type="text" id="header_search" autocomplete="off" name="search_key" />
+                </div>
+            </form>
+            <div class="search_results_bar" id="SearchResultsBar"> 
+                    <ul class="results">  </ul> 
+            </div>
+            <div tal:condition="tickets/ticketList">
+            <div id="ticket-sub-toolbar">
+                <div class="sort-bar">
+                    <a class="drop-right nav-trigger" href="#" menuid="#SortMenu">
+                        Sorted by <b>Date Created</b>
+                    </a>
+                    <div class="fd-menu" id="SortMenu" style="display:none; margin-left:-5px; margin-top:18px;">
+                        <ul>
+                            <li>
+                                <a href="#" class="wf_order" wf_order="created_at"> 
+                                     <span class="icon ticksymbol"></span>
+                                      Date Created
+                                </a>                  
+                            </li>
+                            <li>
+                                <a href="#" class="wf_order" wf_order="updated_at">  
+                                    Last Modified
+                                </a>                  
+                            </li>
+                            <li>
+                                <a href="#" class="wf_order" wf_order="status"> 
+                                    Status
+                                </a>                  
+                            </li>
+                        </ul><span class="seperator"></span>
+                        <ul>
+                            <li>
+                                <a href="#" class="wf_order_type" wf_order_type="asc">
+                                    Ascending
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="wf_order_type" wf_order_type="desc">
+                                    <span class="icon ticksymbol"></span>
+                                    Descending
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="ticket-list-group">
+                <span tal:replace="structure tickets/ticketList">hello</span>
+            </div>
+            <script type="text/javascript">
+                //&lt;![CDATA[
+                jQuery(".wf_order_type, .wf_order").die();
+                jQuery('.wf_order_type, .wf_order').live("click", function(ev){
+                    ev.preventDefault();
+                    setCookie(this.className, this.getAttribute(this.className),'/helpdesk/');
+                    jQuery("#ticket-list").html("<div class='loading-box'></div>"); 
+                    var url = window.location.href;
+                    if ((url.indexOf("filter") == -1) && (url.indexOf("requester") == -1)) {
+                      url += "/filter/all";
+                    }
 
-            <span tal:content="testview/dummy">test</span>
+                    jQuery.ajax({
+                        url: url + "?partial=true",
+                        type: "POST",
+                        dataType: "script",
+                        success: function(msg){}
+                    }); 
+                    jQuery(this).hide();  
+                }); 
+               //]]&gt;
+            </script>
+            <script type="text/javascript">
+                //&lt;![CDATA[
+                // Localizing js elements
+                date_lang = {
+                    ago: "Ago",
+                    from: "From Now",
+                    now: "Just Now",
+                    second: "Second",
+                    seconds: "Seconds",
+                    minute: "Minute",
+                    minutes: "Minutes",
+                    hour: "Hour",
+                    hours: "Hours",
+                    day: "Day",
+                    days: "Days",
+                    week: "Week",
+                    weeks: "Weeks",
+                    month: "Month",
+                    months: "Months",
+                    year: "Year",
+                    years: "Years"
+                };
+   
+                jQuery(document).ready(function() {
+                    jQuery("a.dialog2, a[data-ajax-dialog], button.dialog2").dialog2();
+                });
+                //]]&gt;
+            </script>
+            </div>
+            <div tal:condition="not: tickets/ticketList">
+                <span tal:replace="structure tickets/pageArea">hello</span>
+            </div>
+            <script src="/packages/defaults.js?1353134572"></script>
+            <script src="/packages/frameworks.js?1353134572"></script>
+            <script src="/packages/workspace.js?1353134572"></script>
+            <script src="/packages/notifications.js?1353134572"></script>
+            <script type="text/javascript">
+                    PROFILE_BLANK_THUMB_PATH = '/images/fillers/profile_blank_thumb.gif?1348989196';
+                    PROFILE_BLANK_MEDIUM_PATH = '/images/fillers/profile_blank_medium.gif?1348989196';
+            </script>
+            <script src="/packages/custom_widget.js?1353134572"></script>
+            <script type="text/javascript">
+                //&lt;![CDATA[
+                jQuery('body').attr('class','single ticket_list');
+                jQuery('ul.header-tabs li.active').removeClass('active');
+                jQuery('li[data-tab-name="checkstatus"]').addClass('active')
+                //]]&gt;
+            </script>
+            <script type="text/javascript">
+                //&lt;![CDATA[
+                jQuery(".nav-trigger").showAsMenu(); 
+                //]]&gt;
+            </script>
+            <script>
+                jQuery_1_7_1('.modal').appendTo(jQuery_1_7_1("body"));
+                jQuery_1_7_1('document').ready( function() {
+                    jQuery_1_7_1('a[class=uiButton]:contains("Close this ticket")')
+                        .bind('click', function(event) {
+                            event.preventDefault();
+                            jQuery_1_7_1.post(this.href);
+                            window.location.href = "/helpdesk/tickets";
+                        });
+                });
+                jQuery_1_7_1('#new_helpdesk_note').on('submit',function(e){
+                    e.preventDefault();
+                    var action = '' + jQuery_1_7_1(this).attr('action'); 
+                    var fd = new FormData(document.getElementById('new_helpdesk_note'));
 
+                    var note = jQuery_1_7_1('textarea#portal_ticket_note').val();
+
+                    /*
+                    fd.append("helpdesk_note[body_html]", note[0]);
+
+                    var f = document.getElementsByName("helpdesk_note[attachments][][resource]");
+                    if f {
+                        var file = document.getElementsByName("helpdesk_note[attachments][][resource]")[0].value
+                        fd.append("helpdesk_note[attachments][][resource]", file);
+                    }
+                    */
+
+                    jQuery_1_7_1.ajax({
+                        type     : "POST",
+                        url      : action,
+                        data     : fd,
+                        contentType : false,
+                        processData : false,
+                    })
+                    .done( function (data) {
+                        location.reload();
+                    })
+                    .fail( function (data) {
+                        alert('error');
+                    });
+                });
+            </script>
         </tal:main-macro>
     </div>
 </body>
 </html>
+</tal:block>
+<tal:block tal:condition="tickets/partial">
+    <span tal:replace="structure tickets/text">hi </span>
+</tal:block>
+</tal:block>
