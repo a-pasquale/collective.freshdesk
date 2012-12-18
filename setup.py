@@ -40,6 +40,8 @@ setup(name='collective.freshdesk',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'requests',
+          'poster',
           # -*- Extra requirements: -*-
       ],
       extras_require={'test': ['plone.app.testing']},
