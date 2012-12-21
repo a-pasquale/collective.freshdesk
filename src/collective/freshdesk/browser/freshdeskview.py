@@ -1,11 +1,12 @@
 from zope.interface import implements, Interface
-
+from zope.component import getUtility
 from Products.Five import BrowserView
-from Products.CMFCore.utils import getToolByName
-
+from plone import api
+from plone.registry.interfaces import IRegistry
 from requests import session
 from lxml import etree
 from ZPublisher.HTTPRequest import FileUpload
+import hashlib
 #from poster.encode import multipart_encode
 
 
@@ -16,6 +17,12 @@ class IFreshdeskView(Interface):
     """
     Freshdesk view interface
     """
+
+    
+def gen_hash_from_params(name, email, secret):
+    m = hashlib.md5()
+    m.update("%s%s%s" % (name, email, secret))
+    return m.hexdigest()
 
 
 class FreshdeskView(BrowserView):
@@ -31,7 +38,7 @@ class FreshdeskView(BrowserView):
     def __len__(self): return 1
 
     def getTickets(self):
-        helpdesk_url = 'http://beta.helpdesk.healthlens.org'
+        helpdesk_url = 'http://healthlens.freshdesk.com'
         params = ''
         files = {}
         partial = False
@@ -50,9 +57,17 @@ class FreshdeskView(BrowserView):
         # Monkeypatch FileUpload class
         FileUpload.__len__ = self.__len__
             
-        with session() as c:
-            c.post("%s/user_session" % helpdesk_url, data=form)
+        registry = getUtility(IRegistry)
+        freshdesk_domain_name = registry['collective.freshdesk.domain_name']
+        freshdesk_sso_secret = registry['collective.freshdesk.sso_secret']
 
+        current = api.user.get_current()
+        name = current.getProperty('fullname')
+        email = current.getProperty('email')
+        h = gen_hash_from_params(name, email, freshdesk_sso_secret)
+        login_url = "%slogin/sso?name=%s&email=%s&hash=%s" % (freshdesk_domain_name, name, email, h)
+        with session() as c:
+            r = c.post(login_url, allow_redirects=True)
             # -- FIX THIS --
             #
             # File uploading is currently broken.
