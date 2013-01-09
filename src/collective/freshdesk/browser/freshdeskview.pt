@@ -25,7 +25,7 @@
                 .ticket-list-group { margin: 0; }
                 #content #attachment-options { display: none } 
             </style>
-            <h1 class="documentFirstHeading"><span></span>Helpdesk Tickets</h1>
+            <h1 id="parent-fieldname-title" class="documentFirstHeading">Helpdesk Tickets</h1>
             <div class="leftcontent">
                 <span tal:replace="structure tickets/all_views"/>
             </div>
