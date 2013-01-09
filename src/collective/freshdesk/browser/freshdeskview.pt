@@ -8,7 +8,9 @@
     <div metal:fill-slot="main">
         <tal:main-macro metal:define-macro="main">
 
-            <link href="/packages/app.css?1354099876" media="screen" rel="stylesheet" type="text/css">
+            <link href="/packages/non_pattern_1.css" media="screen" rel="stylesheet" type="text/css">
+            <link href="/packages/non_pattern_2.css" media="screen" rel="stylesheet" type="text/css">
+
             <style>
                 .search_results_bar { top: 40px; right:0px; width: 325px;} 
                 .nav_search { float: right }
