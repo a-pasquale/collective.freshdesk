@@ -33,7 +33,7 @@
             <div id="new_ticket_modal" class="modal fade hide" role="dialog">
                 <link href="/packages/redactor.css?1353741612" media="screen" rel="stylesheet" type="text/css" />
                 <script src="/packages/redactor.js?1353134572" type="text/javascript"></script>
-                <form action="/helpdesk/tickets" class="new_helpdesk_ticket" enctype="multipart/form-data" id="new_helpdesk_ticket" method="post">
+                <form action="/support/helpdesk/tickets" class="new_helpdesk_ticket" enctype="multipart/form-data" id="new_helpdesk_ticket" method="post">
                     <div class="modal-header">
                         <h3 class="title">Submit a ticket</h3>
                     </div>
@@ -42,25 +42,6 @@
                             <li class="email"><label for="helpdesk_ticket_email">Requester <span class="required_star">*</span></label><input class=" required email" id="helpdesk_ticket_email" name="helpdesk_ticket[email]" size="30" type="text" tal:attributes="value python: context.portal_membership.getAuthenticatedMember().getProperty('email')" /></li>
                             <li class="text"><label for="helpdesk_ticket_subject">Subject <span class="required_star">*</span></label><input class=" required text" id="helpdesk_ticket_subject" name="helpdesk_ticket[subject]" size="30" type="text" /></li>
                             <li class="html_paragraph"><label for="helpdesk_ticket_description_html">Description <span class="required_star">*</span></label><textarea class=" required html_paragraph mceEditor" cols="40" id="helpdesk_ticket_description_html" name="helpdesk_ticket[description_html]" rows="20"></textarea></li>
-                            <!--
-                            <li>
-                                <label>Attach a file</label>
-                                <input type="file" id="ticket_file" name="emptyfile" nameWhenFilled="helpdesk_ticket[attachments][][resource]" fileContainer="ticket-container" fileList="ticket-attachments" sendFocusTo="ticket-body" />
-                                <div class="info-data">
-                                    Attachment(s) size can be up to 15 MB
-                                </div>
-                                <div class="attachments" id="ticket-container" style="display:none">
-                                    <div id="ticket-attachments"></div>
-                                </div>
-                                <script id="file-list-template" type="text/x-jquery-tmpl">          
-                                    <div class="item">
-                                        <span>
-                                            ${name} - <a href="javascript:void(0)" onclick="Helpdesk.Multifile.remove(this); return false;" inputId="${inputId}">remove</a>
-                                        </span>
-                                    </div>
-                                </script>
-                            </li>
-                            -->
                         </ul>
                     </div>
                     <div class="modal-footer">
