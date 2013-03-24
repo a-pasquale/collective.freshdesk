@@ -13,4 +13,12 @@
       permission="zope.Public"
       />
 
+  <browser:page
+      for="*"
+      name="freshdesk_search"
+      class=".freshdeskSearch.FreshdeskSearch"
+      allowed_interface=".freshdeskSearch.IFreshdeskSearch"
+      permission="zope.Public"
+      />
+
 </configure>
