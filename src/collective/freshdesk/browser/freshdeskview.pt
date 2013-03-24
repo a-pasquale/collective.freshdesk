@@ -128,23 +128,23 @@
             </div>
             <script type="text/javascript">
                 //&lt;![CDATA[
-                jQuery(".wf_order_type, .wf_order").die();
-                jQuery('.wf_order_type, .wf_order').live("click", function(ev){
+                $(".wf_order_type, .wf_order").die();
+                $('.wf_order_type, .wf_order').live("click", function(ev){
                     ev.preventDefault();
                     setCookie(this.className, this.getAttribute(this.className),'/helpdesk/');
-                    jQuery("#ticket-list").html("<div class='loading-box'></div>"); 
+                    $("#ticket-list").html("<div class='loading-box'></div>"); 
                     var url = window.location.href;
                     if ((url.indexOf("filter") == -1) && (url.indexOf("requester") == -1)) {
                       url += "/filter/all";
                     }
 
-                    jQuery.ajax({
+                    $.ajax({
                         url: url + "?partial=true",
                         type: "POST",
                         dataType: "script",
                         success: function(msg){}
                     }); 
-                    jQuery(this).hide();  
+                    $(this).hide();  
                 }); 
                //]]&gt;
             </script>
@@ -171,52 +171,47 @@
                     years: "Years"
                 };
    
-                jQuery(document).ready(function() {
-                    jQuery("a.dialog2, a[data-ajax-dialog], button.dialog2").dialog2();
+                $(document).ready(function() {
+                    $("a.dialog2, a[data-ajax-dialog], button.dialog2").dialog2();
                 });
                 //]]&gt;
             </script>
             </div>
+            <script src="/packages/defaults.js"></script>
+            <script src="/++resource++collective.freshdesk/jquery_validator.js"></script>
+            <script src="/packages/workspace.js"></script>
+            <script src="/packages/notifications.js"></script>
             <div tal:condition="not: tickets/ticketList">
                 <span tal:replace="structure tickets/pageArea">hello</span>
             </div>
-            <script src="/packages/defaults.js?1353134572"></script>
-            <script src="/packages/frameworks.js?1353134572"></script>
-            <script src="/packages/workspace.js?1353134572"></script>
-            <script src="/packages/notifications.js?1353134572"></script>
             <script type="text/javascript">
                     PROFILE_BLANK_THUMB_PATH = '/images/fillers/profile_blank_thumb.gif?1348989196';
                     PROFILE_BLANK_MEDIUM_PATH = '/images/fillers/profile_blank_medium.gif?1348989196';
             </script>
-            <script src="/packages/custom_widget.js?1353134572"></script>
+            <script src="/packages/custom_widget.js"></script>
             <script type="text/javascript">
                 //&lt;![CDATA[
-                jQuery('body').attr('class','single ticket_list');
-                jQuery('ul.header-tabs li.active').removeClass('active');
-                jQuery('li[data-tab-name="checkstatus"]').addClass('active')
-                //]]&gt;
-            </script>
-            <script type="text/javascript">
-                //&lt;![CDATA[
-                jQuery(".nav-trigger").showAsMenu(); 
+                $('body').attr('class','single ticket_list');
+                $('ul.header-tabs li.active').removeClass('active');
+                $('li[data-tab-name="checkstatus"]').addClass('active')
                 //]]&gt;
             </script>
             <script>
-                jQuery_1_7_1('.modal').appendTo(jQuery_1_7_1("body"));
-                jQuery_1_7_1('document').ready( function() {
-                    jQuery_1_7_1('a[class=uiButton]:contains("Close this ticket")')
+                $('.modal').appendTo($("body"));
+                $('document').ready( function() {
+                    $('a[class=uiButton]:contains("Close this ticket")')
                         .bind('click', function(event) {
                             event.preventDefault();
-                            jQuery_1_7_1.post(this.href);
-                            window.location.href = "/helpdesk/tickets";
+                            $.post(this.href);
+                            window.location.href = "/support/helpdesk/tickets";
                         });
                 });
-                jQuery_1_7_1('#new_helpdesk_note').on('submit',function(e){
+                $('#new_helpdesk_note').on('submit',function(e){
                     e.preventDefault();
-                    var action = '' + jQuery_1_7_1(this).attr('action'); 
+                    var action = '' + $(this).attr('action'); 
                     var fd = new FormData(document.getElementById('new_helpdesk_note'));
 
-                    var note = jQuery_1_7_1('textarea#portal_ticket_note').val();
+                    var note = $('textarea#portal_ticket_note').val();
 
                     /*
                     fd.append("helpdesk_note[body_html]", note[0]);
@@ -228,7 +223,7 @@
                     }
                     */
 
-                    jQuery_1_7_1.ajax({
+                    $.ajax({
                         type     : "POST",
                         url      : action,
                         data     : fd,
