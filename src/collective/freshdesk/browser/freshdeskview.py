@@ -38,7 +38,6 @@ class FreshdeskView(BrowserView):
     def __len__(self): return 1
 
     def getTickets(self):
-        helpdesk_url = 'http://healthlens.freshdesk.com'
         params = ''
         files = {}
         partial = False
@@ -83,9 +82,9 @@ class FreshdeskView(BrowserView):
                         #datagen, headers = multipart_encode({"helpdesk_note[attachments][][resource]": file})
                         #payload.update(datagen)
 
-            url = "%s/support/tickets/%s" % (helpdesk_url, params)
+            url = "%ssupport/tickets/%s" % (freshdesk_domain_name, params)
             if "company_tickets" in params:
-                url = "%s/support/%s" % (helpdesk_url, params)
+                url = "%ssupport/%s" % (freshdesk_domain_name, params)
                     
             if len(form) > 3:
                 r = c.post(url, data=form, headers=headers, files=files, cookies=cookies)
