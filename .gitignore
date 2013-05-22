@@ -21,3 +21,5 @@ dist
 *.tmp*
 *.un~
 *.swp
+*.swo
+*.swn
