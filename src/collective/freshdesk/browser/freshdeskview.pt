@@ -1,5 +1,3 @@
-<tal:block tal:define="tickets view/getTickets">
-<tal:block tal:condition="not: tickets/partial">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
@@ -7,224 +5,73 @@
 <body>
     <div metal:fill-slot="main">
         <tal:main-macro metal:define-macro="main">
-
-            <link href="/packages/non_pattern_1.css" media="screen" rel="stylesheet" type="text/css">
-            <link href="/packages/non_pattern_2.css" media="screen" rel="stylesheet" type="text/css">
-
             <style>
-                .search_results_bar { top: 40px; right:0px; width: 325px;} 
-                .nav_search { float: right }
-                #new_ticket_modal { float: left; }
-                #new_ticket_modal form { margin: 0; }
-                .ui-form .required.html_paragraph { height: 12em; }
-                .ssportal_filters { float: left; margin: 0; margin-right: 20px; }
-                .view_filters { margin: 0; }
-                .view_filters .link-item { padding: 0; }
-                #content .fd-menu ul, #content .ui-form { list-style-type: none; margin-left: 0; }
-                table#tickets-expanded { margin-bottom: 0; }
-                .ticket-list-group { margin: 0; }
-                #content #attachment-options { display: none } 
+                #commenting { display: none; }
+                .freshdesk_link { display: none; }
             </style>
-            <h1 id="parent-fieldname-title" class="documentFirstHeading">Helpdesk Tickets</h1>
-            <div class="leftcontent">
-                <span tal:replace="structure tickets/all_views"/>
-            </div>
-            <a href="#new_ticket_modal" role="button" class="btn" data-toggle="modal" data-backdrop="true">Submit a ticket</a>
-            <div id="new_ticket_modal" class="modal fade hide" role="dialog">
-                <link href="/packages/redactor.css?1353741612" media="screen" rel="stylesheet" type="text/css" />
-                <script src="/packages/redactor.js?1353134572" type="text/javascript"></script>
-                <form action="/support/helpdesk/tickets" class="new_helpdesk_ticket" enctype="multipart/form-data" id="new_helpdesk_ticket" method="post">
-                    <div class="modal-header">
-                        <h3 class="title">Submit a ticket</h3>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="ui-form">    
-                            <li class="email"><label for="helpdesk_ticket_email">Requester <span class="required_star">*</span></label><input class=" required email" id="helpdesk_ticket_email" name="helpdesk_ticket[email]" size="30" type="text" tal:attributes="value python: context.portal_membership.getAuthenticatedMember().getProperty('email')" /></li>
-                            <li class="text"><label for="helpdesk_ticket_subject">Subject <span class="required_star">*</span></label><input class=" required text" id="helpdesk_ticket_subject" name="helpdesk_ticket[subject]" size="30" type="text" /></li>
-                            <li class="html_paragraph"><label for="helpdesk_ticket_description_html">Description <span class="required_star">*</span></label><textarea class=" required html_paragraph mceEditor" cols="40" id="helpdesk_ticket_description_html" name="helpdesk_ticket[description_html]" rows="20"></textarea></li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="button-container">
-                            <input class="btn btn-primary" id="helpdesk_ticket_submit" name="commit" type="submit" value="Submit" />
-                            <input id="meta_user_agent" name="meta[user_agent]" type="hidden" value="" />
-                            <button data-dismiss="modal" class="btn">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <form action="/search" class="nav_search" method="get">
-                <div class="search_bar" id="SearchBar">
-                    <span class="searchIcon"></span>
-                    <label class="overlabel" for="header_search">Search</label>
-                    <input value="" type="text" id="header_search" autocomplete="off" name="search_key" />
-                </div>
-            </form>
-            <div class="search_results_bar" id="SearchResultsBar"> 
-                    <ul class="results">  </ul> 
-            </div>
-            <div tal:condition="tickets/ticketList">
-            <div id="ticket-sub-toolbar">
-                <div class="sort-bar">
-                    <a class="drop-right nav-trigger" href="#" menuid="#SortMenu">
-                        Sorted by <b>Date Created</b>
-                    </a>
-                    <div class="fd-menu" id="SortMenu" style="display:none; margin-left:-5px; margin-top:18px;">
-                        <ul>
-                            <li>
-                                <a href="#" class="wf_order" wf_order="created_at"> 
-                                     <span class="icon ticksymbol"></span>
-                                      Date Created
-                                </a>                  
-                            </li>
-                            <li>
-                                <a href="#" class="wf_order" wf_order="updated_at">  
-                                    Last Modified
-                                </a>                  
-                            </li>
-                            <li>
-                                <a href="#" class="wf_order" wf_order="status"> 
-                                    Status
-                                </a>                  
-                            </li>
-                        </ul><span class="seperator"></span>
-                        <ul>
-                            <li>
-                                <a href="#" class="wf_order_type" wf_order_type="asc">
-                                    Ascending
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="wf_order_type" wf_order_type="desc">
-                                    <span class="icon ticksymbol"></span>
-                                    Descending
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="ticket-list-group">
-                <span tal:replace="structure tickets/ticketList">hello</span>
-            </div>
+            <h1 class="documentFirstHeading">Helpdesk Tickets</h1>
+            <div class="alert fade in freshdesk_link">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <p>Viewing helpdesk tickets requires accepting a "cookie" from FreshDesk.  Please change your browser's cookie preferences or click <a tal:attributes="href view/getLink" target="_blank">this link</a>.  A new window will open.  Please close the window and your tickets will now be visible in the Healthlens portal.</p>
+           </div>
+            <iframe id="tickets" width="100%" height="1145" src=""></iframe>
+            <script language="text/javascript" 
+                    tal:replace="structure view/getScript" />
             <script type="text/javascript">
-                //&lt;![CDATA[
-                $(".wf_order_type, .wf_order").die();
-                $('.wf_order_type, .wf_order').live("click", function(ev){
-                    ev.preventDefault();
-                    setCookie(this.className, this.getAttribute(this.className),'/helpdesk/');
-                    $("#ticket-list").html("<div class='loading-box'></div>"); 
-                    var url = window.location.href;
-                    if ((url.indexOf("filter") == -1) && (url.indexOf("requester") == -1)) {
-                      url += "/filter/all";
+
+                // The html returned from freshdesk is not a javascript and
+                // evaluating it will cause an error.  Suppress it.
+                window.onerror=function(){
+                   return true
+                }
+
+                function createCookie(name,value,days) {
+                    if (days) {
+                        var date = new Date();
+                        date.setTime(date.getTime()+(days*24*60*60*1000));
+                        var expires = "; expires="+date.toGMTString();
+                    }
+                    else var expires = "";
+                       document.cookie = name+"="+value+expires+"; path=/";
+                }
+
+                var cookies;
+
+                function readCookie(name,c,C,i){
+                    if(cookies){ return cookies[name]; }
+
+                    c = document.cookie.split('; ');
+                    cookies = {};
+
+                    for(i=c.length-1; i>=0; i--){
+                        C = c[i].split('=');
+                        cookies[C[0]] = C[1];
                     }
 
-                    $.ajax({
-                        url: url + "?partial=true",
-                        type: "POST",
-                        dataType: "script",
-                        success: function(msg){}
-                    }); 
-                    $(this).hide();  
-                }); 
-               //]]&gt;
-            </script>
-            <script type="text/javascript">
-                //&lt;![CDATA[
-                // Localizing js elements
-                date_lang = {
-                    ago: "Ago",
-                    from: "From Now",
-                    now: "Just Now",
-                    second: "Second",
-                    seconds: "Seconds",
-                    minute: "Minute",
-                    minutes: "Minutes",
-                    hour: "Hour",
-                    hours: "Hours",
-                    day: "Day",
-                    days: "Days",
-                    week: "Week",
-                    weeks: "Weeks",
-                    month: "Month",
-                    months: "Months",
-                    year: "Year",
-                    years: "Years"
-                };
-   
-                $(document).ready(function() {
-                    $("a.dialog2, a[data-ajax-dialog], button.dialog2").dialog2();
+                    return cookies[name];
+                }
+
+                /*
+                    Default policy for recent versions of safari is to
+                    block cookies from 3rd parties.  The helpdesk relies on
+                    cookies from https://healthlens.freshdesk.com.  This
+                    displays a message asking users of safari to click a link 
+                    to open a new window which allows the cookies to be
+                    stored.
+                */
+                if (navigator.userAgent.indexOf('Safari') != -1 
+                  && navigator.userAgent.indexOf('Chrome') == -1
+                    && readCookie("safari_cookie_fix") != 1) 
+                      $(".freshdesk_link").show();
+                               
+                $(".freshdesk_link").on("click", function() {
+                    createCookie("safari_cookie_fix", 1);
+                    getTickets();
+                    $(this).alert("close");
                 });
-                //]]&gt;
-            </script>
-            </div>
-            <script src="/packages/defaults.js"></script>
-            <script src="/++resource++collective.freshdesk/jquery_validator.js"></script>
-            <script src="/packages/workspace.js"></script>
-            <script src="/packages/notifications.js"></script>
-            <div tal:condition="not: tickets/ticketList">
-                <span tal:replace="structure tickets/pageArea">hello</span>
-            </div>
-            <script type="text/javascript">
-                    PROFILE_BLANK_THUMB_PATH = '/images/fillers/profile_blank_thumb.gif?1348989196';
-                    PROFILE_BLANK_MEDIUM_PATH = '/images/fillers/profile_blank_medium.gif?1348989196';
-            </script>
-            <script src="/packages/custom_widget.js"></script>
-            <script type="text/javascript">
-                //&lt;![CDATA[
-                $('body').attr('class','single ticket_list');
-                $('ul.header-tabs li.active').removeClass('active');
-                $('li[data-tab-name="checkstatus"]').addClass('active')
-                //]]&gt;
-            </script>
-            <script>
-                $('.modal').appendTo($("body"));
-                $('document').ready( function() {
-                    $('a[class=uiButton]:contains("Close this ticket")')
-                        .bind('click', function(event) {
-                            event.preventDefault();
-                            $.post(this.href);
-                            window.location.href = "/support/helpdesk/tickets";
-                        });
-                });
-                $('#new_helpdesk_note').on('submit',function(e){
-                    e.preventDefault();
-                    var action = '' + $(this).attr('action'); 
-                    var fd = new FormData(document.getElementById('new_helpdesk_note'));
 
-                    var note = $('textarea#portal_ticket_note').val();
-
-                    /*
-                    fd.append("helpdesk_note[body_html]", note[0]);
-
-                    var f = document.getElementsByName("helpdesk_note[attachments][][resource]");
-                    if f {
-                        var file = document.getElementsByName("helpdesk_note[attachments][][resource]")[0].value
-                        fd.append("helpdesk_note[attachments][][resource]", file);
-                    }
-                    */
-
-                    $.ajax({
-                        type     : "POST",
-                        url      : action,
-                        data     : fd,
-                        contentType : false,
-                        processData : false,
-                    })
-                    .done( function (data) {
-                        location.reload();
-                    })
-                    .fail( function (data) {
-                        alert('error');
-                    });
-                });
             </script>
         </tal:main-macro>
     </div>
 </body>
 </html>
-</tal:block>
-<tal:block tal:condition="tickets/partial">
-    <span tal:replace="structure tickets/text">hi </span>
-</tal:block>
-</tal:block>
