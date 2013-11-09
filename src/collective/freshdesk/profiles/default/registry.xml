@@ -1,15 +1,26 @@
 <registry>
-
     <record name="collective.freshdesk.domain_name">
         <field type="plone.registry.field.TextLine">
             <title>FreshDesk Domain Name</title>
         </field>
-        <value></value>
+        <value purge="false"></value>
     </record>
     <record name="collective.freshdesk.sso_secret">
         <field type="plone.registry.field.TextLine">
             <title>FreshDesk SSO Secret</title>
         </field>
-        <value></value>
+        <value purge="false"></value>
+    </record>
+    <record name="collective.freshdesk.username">
+        <field type="plone.registry.field.TextLine">
+            <title>FreshDesk Admin Username</title>
+        </field>
+        <value purge="false"></value>
+    </record>
+    <record name="collective.freshdesk.password">
+        <field type="plone.registry.field.TextLine">
+            <title>FreshDesk Admin Password</title>
+        </field>
+        <value purge="false"></value>
     </record>
 </registry>
