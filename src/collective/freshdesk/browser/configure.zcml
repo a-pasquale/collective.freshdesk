@@ -15,10 +15,11 @@
 
   <browser:page
       for="*"
-      name="freshdesk_search"
-      class=".freshdeskSearch.FreshdeskSearch"
-      allowed_interface=".freshdeskSearch.IFreshdeskSearch"
-      permission="zope.Public"
+      name="tickets_view"
+      class=".tickets.ticketsView"
+      template="tickets.pt"
+      allowed_interface=".tickets.ITicketsView"
+      permission="zope2.View"
       />
 
 </configure>

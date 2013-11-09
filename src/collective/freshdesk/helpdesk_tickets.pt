@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plonetheme.healthlens">
+
+<body>
+    <div class="tile-title"><span>My Tickets</span></div>
+    <ul id="my_tickets"></ul>
+    <a href="javascript:FreshWidget.show();">Open a new ticket</a>
+    <script>
+        $(document).ready( function () {
+            $.get('/@@tickets_view', function(data) {
+                $('#my_tickets').hide().html(data).slideDown();
+            });
+        });
+    </script>
+</body>
+</html>
